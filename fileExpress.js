@@ -1,10 +1,11 @@
 const express = require('express')
 const app = express()
-const readFile = require('./readSampleFile')
-const writeFile = require('./writeSampleFile')
-const updateFile = require('./updateSampleFile')
-const deleteLineOfFile = require('./deleteLineOfFile')
-const bodyParser = require('body-parser')
+// const readFile = require('./readSampleFile')
+// const writeFile = require('./writeSampleFile')
+// const updateFile = require('./updateSampleFile')
+// const deleteLineOfFile = require('./deleteLineOfFile')
+const bodyParser = require('./body-parser')
+const operations = require('./add.js')
 
 app.set('view engine', 'ejs')
 
@@ -16,13 +17,13 @@ app.get('/', function (request, response) {
 })
 
 app.get('/read', function (request, response) {
-  let lines = readFile('./sample.txt')
-  lines = lines.split('\n')
-  response.render('read', { items: lines })
+  operations.read().then(function (result) {
+    response.json(result[0])
+  })
 })
-
-app.post('/write', function (request, response) {
-  const textInput = request.body.data
+/*
+app.post('/write/:writeContent', function (request, response) {
+  const writeContent = request.params.writeContent
   writeFile('./sample.txt', '\n' + textInput, () => {
     response.redirect('/read')
   })
@@ -56,7 +57,7 @@ app.post('/destroy', function (request, response) {
     }
   })
 })
-
+*/
 app.listen(3000, function () {
   console.log('Listening')
 })
