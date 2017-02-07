@@ -1,0 +1,37 @@
+<html>
+<body>
+<ol>
+<% items.forEach(function (item) { %>
+  <li><%= item %></li>
+<% }); %>
+</ol>
+<form action = "/write" method = "POST">
+  <h3>Write Request</h3>
+  Enter data to be appended in file:
+  <input type="text" name="data">
+  <br><br>
+  <input type="submit" value="Submit">
+</form> 
+
+<form action="/update" method = "POST">
+  <h3>Update Request</h3>
+  Enter Line Number to be modified:
+  <input type="number" name="lineNumber">
+  <br>
+  Enter data to be written:
+  <input type="text" name="data">
+  <br><br>
+  <input type="submit" value="Submit">
+</form> 
+
+<form action="/destroy" method = "POST">
+  <h3>Delete Request</h3>
+  Enter Line Number to be deleted:
+  <input type="text" name="lineNumber" value="0">
+  <br><br>
+  <input type="submit" value="Submit">
+</form> 
+
+</form>
+</body>
+</html>
