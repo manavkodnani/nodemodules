@@ -10,7 +10,13 @@ const operations = {
     return sequelize.query(`SELECT * from todo ORDER BY id`)
   },
   update: function (id, description, status) {
-    return sequelize.query(`UPDATE todo SET DESCRIPTION = '${description}', STATUS = '${status}' where ID = '${id}'`)
+    if (!description) {
+      return sequelize.query(`UPDATE TODO SET STATUS = '${status}' WHERE ID = '${id}'`)
+    }
+    if (!status) {
+      return sequelize.query(`UPDATE TODO SET DESCRIPTION = '${description}' WHERE ID = ${id}`)
+    }
+    return sequelize.query(`UPDATE TODO SET DESCRIPTION = '${description}', STATUS = ${status} WHERE ID = ${id}`)
   },
   destroy: function (id) {
     return sequelize.query(`DELETE FROM TODO WHERE ID = '${id}'`)
