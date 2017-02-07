@@ -7,14 +7,16 @@ const app = express()
 const bodyParser = require('body-parser')
 const operations = require('./add.js')
 
+app.use(express.static('public'))
+
+app.get('/', function (req, res) {
+  res.render('../public/index')
+})
 app.set('view engine', 'ejs')
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-app.get('/', function (request, response) {
-  response.send('Hello World')
-})
 
 app.get('/read', function (request, response) {
   operations.read()

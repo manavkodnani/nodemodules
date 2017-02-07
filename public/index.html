@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  
+  <script>
+  var row = "";
+  fetch('http://localhost:3000/read', {
+    method: 'get'
+}).then(function(response) {
+  response.json().then(function(json) {
+  json.forEach((obj)=>{
+     row += "<li>" +obj.id+"   "+obj.description+"    "+obj.status +"</li>";
+  })
+}).then(()=>{    document.getElementById('read').innerHTML = row;});
+}).catch(function(err) {
+    console.log(err)
+});
+  </script>
+  <ul id = "read" >
+  </ul>
+</body>
+</html>
