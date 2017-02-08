@@ -14,7 +14,7 @@ app.get('/', function (req, res) {
 })
 app.set('view engine', 'ejs')
 
-app.use(bodyParser.urlencoded({ extended: true }))
+
 app.use(bodyParser.json())
 
 
@@ -45,6 +45,7 @@ app.put('/update/:id', function (request, response) {
   const id = request.params.id
   const description = request.body.description
   const status = request.body.status
+  console.log(description, status)
   operations.update(id, description, status)
     .then(function (result) {
       response.send('Successfuly updated')
