@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
   <meta charset="UTF-8">
@@ -8,38 +7,21 @@
 </head>
 
 <body>
-
-  <h1> TODO </h1>
-  <hr></hr>
-  <ul id="read">
-  </ul>
-  <form action="/write" method="POST">
-    <h3>Write Request</h3>
-    Enter data to be appended in file:
-    <input type="text" name="data" id="description">
-    <br><br>
-    <input type="button" value="Submit" id="writeFile">
-  </form>
-  <form action="/update" method="POST">
-    <h3>Update Request</h3>
-    Enter Line Number to be modified:
-    <select id = "lineID"></select>
-    <br> Enter data to be written:
-    <input type="text" name="description" id="descriptionUpdate">
-    <br> Status to be updated:
-    <input type="text" name="status" id="status">
-    <br><br>
-    <input type="button" value="Submit" id="updateFile">
-  </form>
-  <form action="/destroy" method="POST">
-    <h3>Delete Request</h3>
-    Enter Line Number to be deleted:
-    <select id = "lineID"></select>
-    <br><br>
-    <input type="button" value="Submit" id="deleteFile">
-  </form>
-
-  <script src = 'index.js'></script>
+  <div id="box">
+    <div id="top">
+      <h1> TODO </h1>
+    </div>
+    <form action="/write" method="POST">
+      <h3>What needs to be done</h3>
+      <input type="text" name="data" id="description">
+      <br>
+      <input type="button" value="Add Task" id="writeFile">
+    </form>
+    <br><br><br>
+    <div id="read">
+    </div>
+  </div>
+  <script src='index.js'></script>
 
 </body>
 

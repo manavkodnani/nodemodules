@@ -7,12 +7,15 @@ function readFile() {
     response.json().then(function (json) {
       let index = 1
       json.forEach((obj) => {
-        row += '<input type="checkbox"> <li>' + obj.description + '    ' + obj.status + '</li>'
+        if (obj.status === true) {
+          row += `<li><input type="checkbox" id=${obj.id} checked="true" onclick="updateStatus(id)">${obj.description}<input type="text" id=text${obj.id}><input type='button' id=${obj.id} value="Edit" onclick="updateDescription(id)"><input type='button' id=${obj.id} value="Delete" onclick="deleteFile(id)"></li>`
+        } else {
+          row += `<li><input type="checkbox" id=${obj.id} onclick="updateStatus(id)">${obj.description}<input type="text" id=text${obj.id}><input type='button' id=${obj.id} value="Edit" onclick="updateDescription(id)"><input type='button' id=${obj.id} value="Delete" onclick="deleteFile(id)"></li>`
+        }
         option += `<option value = ${obj.id}>` + index++ + `</option>`
       })
     }).then(() => {
       document.getElementById('read').innerHTML = row
-      document.getElementById('lineID').innerHTML = option
     })
   }).catch(function (err) {
     console.log(err)
@@ -32,38 +35,53 @@ document.getElementById("writeFile").addEventListener("click",
     })
   })
 
-document.getElementById("deleteFile").addEventListener("click",
-  function () {
-    let id = document.getElementById('lineID').value
-    fetch(`/destroy/${id}`, {
-      method: 'delete'
-    }).then(function (response) {
-      readFile()
-    }).catch(function (err) {
-      console.log(err)
-    })
+function deleteFile(id) {
+  fetch(`/destroy/${id}`, {
+    method: 'delete'
+  }).then(function (response) {
+    readFile()
+  }).catch(function (err) {
+    console.log(err)
   })
+}
 
-document.getElementById("updateFile").addEventListener("click",
-  function () {
-    let descriptionData = document.getElementById('descriptionUpdate').value
-    let id = document.getElementById('lineID').value
-    let statusData = document.getElementById('status').value
-    console.log(id, descriptionData, statusData)
-    let data = { description: descriptionData, status: statusData }
-    console.log(data)
-    fetch(`/update/${id}`, {
-      method: 'put',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(function (response) {
-      readFile()
-    }).catch(function (err) {
-      console.log(err)
-    })
+
+function updateStatus(id) {
+  // alert(id)
+  const statusData = document.getElementById(id).checked.toString()
+  let data = { status: statusData }
+  fetch(`/update/${id}`, {
+    method: 'put',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(function (response) {
+    readFile()
+  }).catch(function (err) {
+    console.log(err)
   })
+}
+
+function updateDescription(id) {
+  // alert(id)
+  const textId = 'text' + id
+  console.log(id)
+  const descriptionData = document.getElementById(textId).value
+  console.log(descriptionData)
+  let data = { description: descriptionData }
+  fetch(`/update/${id}`, {
+    method: 'put',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(function (response) {
+    readFile()
+  }).catch(function (err) {
+    console.log(err)
+  })
+}
 
 readFile()
 
