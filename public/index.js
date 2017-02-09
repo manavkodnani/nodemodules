@@ -8,9 +8,9 @@ function readFile() {
       let index = 1
       json.forEach((obj) => {
         if (obj.status === true) {
-          row += `<li><input type="checkbox" id=${obj.id} checked="true" onclick="updateStatus(id)">${obj.description}<input type="text" id=text${obj.id}><input type='button' id=${obj.id} value="Edit" onclick="updateDescription(id)"><input type='button' id=${obj.id} value="Delete" onclick="deleteFile(id)"></li>`
+          row += `<li><input type="checkbox" id=${obj.id} checked="true" onclick="updateStatus(id)">${obj.description}   <input type="text" placeholder="Edit Text" id=text${obj.id}><input type='button' id=${obj.id} value="Edit" onclick="updateDescription(id)"><input type='button' id=${obj.id} value="Delete" onclick="deleteFile(id)"></li><br>`
         } else {
-          row += `<li><input type="checkbox" id=${obj.id} onclick="updateStatus(id)">${obj.description}<input type="text" id=text${obj.id}><input type='button' id=${obj.id} value="Edit" onclick="updateDescription(id)"><input type='button' id=${obj.id} value="Delete" onclick="deleteFile(id)"></li>`
+          row += `<li><input type="checkbox" id=${obj.id} onclick="updateStatus(id)">${obj.description}   <input type="text" placeholder="Edit Text" id=text${obj.id}><input type='button' id=${obj.id} value="Edit" onclick="updateDescription(id)"><input type='button' id=${obj.id} value="Delete" onclick="deleteFile(id)"></li><br>`
         }
         option += `<option value = ${obj.id}>` + index++ + `</option>`
       })
@@ -22,9 +22,12 @@ function readFile() {
   })
 }
 
-document.getElementById("writeFile").addEventListener("click",
-  function () {
+document.getElementById("description").onkeydown = function (e) {
+  if (e.keyCode === 13) {
+    // document.getElementById("add-task").submit()
+    // document.getElementById("add-task").method = 'post'
     let description = document.getElementById('description').value
+    document.getElementById('description').value = ''
     console.log(description)
     fetch(`/write/${description}`, {
       method: 'post'
@@ -33,7 +36,8 @@ document.getElementById("writeFile").addEventListener("click",
     }).catch(function (err) {
       console.log(err)
     })
-  })
+  }
+}
 
 function deleteFile(id) {
   fetch(`/destroy/${id}`, {
