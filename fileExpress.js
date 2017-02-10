@@ -33,7 +33,8 @@ app.post('/write/:writeContent', function (request, response) {
   const writeContent = request.params.writeContent
   operations.create(writeContent)
     .then(function (result) {
-      response.send('Successfuly written')
+      console.log(result)
+      response.json(result)
     })
     .catch(function (error) {
       response.sendStatus(500)

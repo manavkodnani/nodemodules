@@ -1,5 +1,5 @@
 body {
-  color: rgba(175, 47, 47, 0.15);
+  background: #f5f5f5;
 }
 #box {
   width:800px;
@@ -24,4 +24,18 @@ h1{
   color:black;
   text-align:center;
   font-size:70px;
+}
+.striked {
+  text-decoration: line-through;
+  border: none;
+}
+.update-description {
+  border: none;
+}
+.delete {
+  border: none;
+  cursor: pointer;
+}
+.check-status {
+  border-radius: none;
 }

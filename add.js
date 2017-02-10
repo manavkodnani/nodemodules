@@ -4,7 +4,7 @@ const sequelize = new Sequelize('postgres://manavkodnani:competitivecoding@local
 
 const operations = {
   create: function (description) {
-    return sequelize.query(`INSERT INTO todo (DESCRIPTION) VALUES ('${description}')`)
+    return sequelize.query(`INSERT INTO todo (DESCRIPTION) VALUES ('${description}') RETURNING id`)
   },
   read: function () {
     return sequelize.query(`SELECT * from todo ORDER BY id`)
