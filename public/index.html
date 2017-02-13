@@ -7,14 +7,20 @@
 </head>
 
 <body>
-  <div id="box">
-    <h1> todos </h1>
-      <input type="text" placeholder="What needs to be done?" name="data" id="description">
-      <br>
-    <br><br><br>
-    <div id="read">
-    </div>
-  </div>
+  <div class="wrapper">
+  <header class="header"><h1>todos</h1><input type="text" placeholder="What needs to be done?" name="data" id="description" class="new-todo"></header>
+  <article class="main">
+    <ul id="read">
+    </ul>
+  </article>
+  <footer class="footer">
+    <label id = 'items'>4 items left</label>
+    <button id = 'all'>All</button>
+    <button id = 'active'>Active</button>
+    <button id = 'completed'>Completed</button>
+  </footer>
+</div>
+  <footer class="info"></footer>
   <script src='index.js'></script>
 
 </body>

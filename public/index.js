@@ -1,5 +1,8 @@
 let row = ''
 let allTasks = []
+let completedTasks = []
+let activeTasks = []
+let flag = 0
 fetch('/read', {
   method: 'get'
 }).then(function (response) {
@@ -7,14 +10,14 @@ fetch('/read', {
     json.forEach((obj, index) => {
       allTasks[index] = obj
     })
-    render()
+    checkFlag()
   })
 })
   .catch(function (err) {
     console.log(err)
   })
 
-document.getElementById("description").onkeydown = function (e) {
+document.getElementById('description').onkeydown = function (e) {
   if (e.keyCode === 13) {
     // document.getElementById("add-task").submit()
     // document.getElementById("add-task").method = 'post'
@@ -28,7 +31,7 @@ document.getElementById("description").onkeydown = function (e) {
       response.json().then(function (json) {
         allTasks.push({ id: json[0].id, description, status: false })
         console.log(allTasks)
-        render()
+        checkFlag()
       })
     }).catch(function (err) {
       console.log(err)
@@ -37,7 +40,6 @@ document.getElementById("description").onkeydown = function (e) {
 }
 
 function deleteFile(id) {
-  console.log(id+"         ijhiuhiuhi")
   let index1 = allTasks.findIndex(x => x.id === id)
   console.log(index1)
   fetch(`/destroy/${id}`, {
@@ -47,7 +49,7 @@ function deleteFile(id) {
     let index = allTasks.findIndex(x => x.id === id)
     console.log('index to delete', index)
     allTasks.splice(index, 1)
-    render()
+    checkFlag()
   }).catch(function (err) {
     console.log(err)
   })
@@ -73,7 +75,7 @@ function updateStatus(id) {
     statusData = (statusData === 'true')
     allTasks[index].status = statusData
     console.log(allTasks[index])
-    render()
+    checkFlag()
   }).catch(function (err) {
     console.log(err)
   })
@@ -95,20 +97,73 @@ function updateDescription(id) {
   }).then(function (response) {
     let index = allTasks.findIndex(x => x.id === id)
     allTasks[index].description = descriptionData
-    render()
+    checkFlag()
   }).catch(function (err) {
     console.log(err)
   })
 }
 
-function render() {
+function showDelete(id) {
+  const deleteId = 'delete' + id
+  document.getElementById(deleteId).style.visibility = 'visible'
+}
+
+function hideDelete(id) {
+  const deleteId = 'delete' + id
+  document.getElementById(deleteId).style.visibility = 'hidden'
+}
+
+function checkFlag () {
+  if (flag === 0) {
+    all()
+  } else if (flag === 1) {
+    completed()
+  } else {
+    active()
+  }
+}
+
+function all () {
+  flag = 0
+  render(allTasks)
+}
+
+function completed () {
+  allTasks.forEach((obj) => {
+    if (obj.status === true) {
+      completedTasks.push(obj)
+    }
+  })
+  flag = 1
+  render(completedTasks)
+}
+
+function active () {
+  allTasks.forEach((obj) => {
+    if (obj.status === false) {
+      activeTasks.push(obj)
+    }
+  })
+  flag = 2
+  render(activeTasks)
+}
+
+document.getElementById('all').addEventListener('click', all)
+
+document.getElementById('completed').addEventListener('click', completed)
+
+document.getElementById('active').addEventListener('click', active)
+
+function render(allTasks) {
   console.log("rendering")
   console.log(allTasks)
   row = ''
   allTasks.forEach((obj) => {
     let checked = obj.status === true ? 'checked' : null
-    row += `<li id="${obj.id}"><input class="check-status" type="checkbox" id=status${obj.id} ${checked} onclick="updateStatus(${obj.id})"><input type="text" value="${obj.description}" class="update-description ${checked ? 'striked' : ''}" id=text${obj.id} onfocusout="updateDescription(${obj.id})"><span class="delete" id=${obj.id} onclick="deleteFile(${obj.id})">❌</span></li><br>`
+    row += `<li id="${obj.id}" onmouseover="showDelete(${obj.id})" onmouseout="hideDelete(${obj.id})"><input class="check-status" type="checkbox" id=status${obj.id} ${checked} onclick="updateStatus(${obj.id})"><input type="text" value="${obj.description}" class="update-description ${checked ? 'striked' : ''}" id=text${obj.id} onfocusout="updateDescription(${obj.id})"><span class="delete" id=delete${obj.id} onclick="deleteFile(${obj.id})" style="visibility:hidden;">❌</span></li><br>`
   })
+  activeTasks = []
+  completedTasks = []
   document.getElementById('read').innerHTML = null
   document.getElementById('read').innerHTML = row
 }
