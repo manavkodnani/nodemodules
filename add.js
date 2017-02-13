@@ -20,6 +20,15 @@ const operations = {
   },
   destroy: function (id) {
     return sequelize.query(`DELETE FROM TODO WHERE ID = '${id}'`)
+  },
+  uncheckAll: function () {
+    return sequelize.query(`UPDATE TODO SET STATUS = false`)
+  },
+  checkAll: function () {
+    return sequelize.query(`UPDATE TODO SET STATUS = true`)
+  },
+  clearCompleted: function () {
+    return sequelize.query(`DELETE FROM TODO WHERE STATUS = true`)
   }
 }
 

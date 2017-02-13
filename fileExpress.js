@@ -69,6 +69,38 @@ app.delete('/destroy/:id', function (request, response) {
     })
 })
 
+app.put('/uncheckAll', function (request, response) {
+  operations.uncheckAll()
+    .then(function (result) {
+      response.send('Successfuly updated')
+    })
+    .catch(function (error) {
+      response.sendStatus(500)
+      console.error(error)
+    })
+})
+
+app.put('/checkAll', function (request, response) {
+  operations.checkAll()
+    .then(function (result) {
+      response.send('Successfuly updated')
+    })
+    .catch(function (error) {
+      response.sendStatus(500)
+      console.error(error)
+    })
+})
+
+app.delete('/clearCompleted', function (request, response) {
+  operations.clearCompleted()
+    .then(function (result) {
+      response.send('Successfuly deleted')
+    })
+    .catch(function (error) {
+      response.sendStatus(500)
+      console.error(error)
+    })
+})
 
 app.listen(3000, function () {
   console.log('Listening')
