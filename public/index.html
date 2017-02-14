@@ -6,27 +6,33 @@
   <link rel="stylesheet" type="text/css" href="todo.css">
 </head>
 <center>
-<body>
-  <h1>todos</h1>
-  <div id="wrapper">
-    <div id="header">
-  <button class="button-image" id="updateAll"><img src="images/arrow.png" height="2%" /></button><input type="text" placeholder="What needs to be done?" name="data" id="description" class="new-todo" autofocus>
-    </div>
-    <ul id="read">
-    </ul>
-  <footer class="footer" id="footer-bar">
-    <span id = 'items'></span>
-    <a href="#/" id = 'all' class="selected">All</a>
-    <a href="#/active" id = 'active'>Active</a>
-    <a href="#/completed" id = 'completed'>Completed</a>
-    <button id = 'clearCompleted'>Clear completed</button>
-  </footer>
-</div>
-  <p>Double Click on task to change details</p>
-    <p>Click on checkbox to change status</p>
-    <p>Click on cross to delete details</p>
-  <script src='index.js'></script>
 
-</body>
+  <body>
+    <h1>todos</h1>
+    <div id="wrapper">
+      <div id="header">
+        <button class="button-image" id="updateAll"><img src="images/arrow.png" height="2%" /></button>
+        <input type="text"
+          placeholder="What needs to be done?" name="data" id="description" class="new-todo" autofocus>
+      </div>
+      <ul id="read">
+      </ul>
+      <footer class="footer" id="footer-bar">
+        <span id='items'></span>
+        <a href="#/" id='all' class="selected">All</a>
+        <a href="#/active" id='active'>Active</a>
+        <a href="#/completed" id='completed'>Completed</a>
+        <button id='clearCompleted'>Clear completed</button>
+      </footer>
+    </div>
+    <div class="footer-info">
+      <p>Double Click on task to change details</p>
+      <p>Click on checkbox to change status</p>
+      <p>Click on cross to delete details</p>
+    </div>
+    <script src='index.js'></script>
+
+  </body>
 </center>
+
 </html>

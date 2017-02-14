@@ -14,9 +14,7 @@ app.get('/', function (req, res) {
 })
 app.set('view engine', 'ejs')
 
-
 app.use(bodyParser.json())
-
 
 app.get('/read', function (request, response) {
   operations.read()
@@ -61,12 +59,16 @@ app.delete('/destroy/:id', function (request, response) {
   const id = request.params.id
   operations.destroy(id)
     .then(function (result) {
-      response.send('Successfuly deleted')
+      if (result[1].rowCount === 0) {
+        response.send('Cannot delete. Id does not exist')
+      } else {
+        response.send('Successfully deleted')
+      }
     })
-    .catch(function (error) {
-      response.sendStatus(500)
-      console.error(error)
-    })
+  .catch(function (error) {
+    response.sendStatus(500)
+    console.error(error)
+  })
 })
 
 app.put('/uncheckAll', function (request, response) {
@@ -105,5 +107,4 @@ app.delete('/clearCompleted', function (request, response) {
 app.listen(3000, function () {
   console.log('Listening')
 })
-
 

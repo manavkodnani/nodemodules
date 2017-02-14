@@ -245,12 +245,14 @@ document.getElementById('updateAll').addEventListener('click', checkAll)
 
 document.getElementById('clearCompleted').addEventListener('click', clearCompleted)
 
-function enableText(obj) {
-  obj.readOnly = ''
-  obj.style.border = '1px solid black'
-  obj.style.boxShadow = 'inset 0 0 3px #878787'
-  obj.style.outline = 'none'
-  let id = parseInt(obj.id)
+function enableText(id) {
+  let textId = 'text' + id
+  let input = document.getElementById(textId)
+  console.log(input)
+  input.readOnly = ''
+  input.style.border = '1px solid black'
+  input.style.boxShadow = 'inset 0 0 3px #878787'
+  input.style.outline = 'none'
   let chk = document.getElementById(`status${id}`)
   let btn = document.getElementById(`delete${id}`)
   chk.style.visibility = 'hidden'
@@ -266,7 +268,7 @@ function render (currentTasks) {
     } else {
       checked = null
     }
-    row += `<li id="${obj.id}" onmouseover="showDelete(${obj.id})" onmouseout="hideDelete(${obj.id})"><input class="check-status" type="checkbox" id=status${obj.id} ${checked} onclick="updateStatus(${obj.id})"><input type="text" value="${obj.description}" class="update-description ${checked ? 'striked' : ''}" id=text${obj.id} ondblclick="enableText(this)" onfocusout="updateDescription(${obj.id})" readOnly="true"><button class="delete" id=delete${obj.id} onclick="deleteFile(${obj.id})" style="visibility:hidden;">×</button></li><br>`
+    row += `<li id="${obj.id}" onmouseover="showDelete(${obj.id})" onmouseout="hideDelete(${obj.id})"><input class="check-status" type="checkbox" id=status${obj.id} ${checked} onclick="updateStatus(${obj.id})"><input type="text" value="${obj.description}" class="update-description ${checked ? 'striked' : ''}" id=text${obj.id} ondblclick="enableText(${obj.id})" onfocusout="updateDescription(${obj.id})" readOnly="true"><button class="delete" id=delete${obj.id} onclick="deleteFile(${obj.id})" style="visibility:hidden;">×</button></li>`
   })
   activeTasks = []
   completedTasks = []

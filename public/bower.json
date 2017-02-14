@@ -1,0 +1,17 @@
+{
+  "name": "Test",
+  "main": "index.js",
+  "homepage": "https://github.com/manavkodnani/nodemodules",
+  "authors": [
+    "manavkodnani <manavkodnani@gmail.com>"
+  ],
+  "description": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
