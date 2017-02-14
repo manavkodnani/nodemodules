@@ -155,6 +155,9 @@ function checkCompleted() {
 
 function all() {
   flag = 0
+  document.getElementById('all').className = 'selected'
+  document.getElementById('active').className = ''
+  document.getElementById('completed').className = ''
   checkCompleted()
   render(allTasks)
 }
@@ -166,6 +169,9 @@ function completed() {
     }
   })
   flag = 1
+  document.getElementById('completed').className = 'selected'
+  document.getElementById('all').className = ''
+  document.getElementById('active').className = ''
   checkCompleted()
   render(completedTasks)
 }
@@ -177,6 +183,9 @@ function active() {
     }
   })
   flag = 2
+  document.getElementById('active').className = 'selected'
+  document.getElementById('completed').className = ''
+  document.getElementById('all').className = ''
   checkCompleted()
   render(activeTasks)
 }
@@ -236,7 +245,19 @@ document.getElementById('updateAll').addEventListener('click', checkAll)
 
 document.getElementById('clearCompleted').addEventListener('click', clearCompleted)
 
-function render(currentTasks) {
+function enableText(obj) {
+  obj.readOnly = ''
+  obj.style.border = '1px solid black'
+  obj.style.boxShadow = 'inset 0 0 3px #878787'
+  obj.style.outline = 'none'
+  let id = parseInt(obj.id)
+  let chk = document.getElementById(`status${id}`)
+  let btn = document.getElementById(`delete${id}`)
+  chk.style.visibility = 'hidden'
+  btn.style.visibility = 'hidden'
+}
+
+function render (currentTasks) {
   row = ''
   let checked
   currentTasks.forEach((obj) => {
@@ -245,7 +266,7 @@ function render(currentTasks) {
     } else {
       checked = null
     }
-    row += `<li id="${obj.id}" onmouseover="showDelete(${obj.id})" onmouseout="hideDelete(${obj.id})"><input class="check-status" type="checkbox" id=status${obj.id} ${checked} onclick="updateStatus(${obj.id})"><input type="text" value="${obj.description}" class="update-description ${checked ? 'striked' : ''}" id=text${obj.id} onfocusout="updateDescription(${obj.id})"><span class="delete" id=delete${obj.id} onclick="deleteFile(${obj.id})" style="visibility:hidden;">❌</span></li><br>`
+    row += `<li id="${obj.id}" onmouseover="showDelete(${obj.id})" onmouseout="hideDelete(${obj.id})"><input class="check-status" type="checkbox" id=status${obj.id} ${checked} onclick="updateStatus(${obj.id})"><input type="text" value="${obj.description}" class="update-description ${checked ? 'striked' : ''}" id=text${obj.id} ondblclick="enableText(this)" onfocusout="updateDescription(${obj.id})" readOnly="true"><button class="delete" id=delete${obj.id} onclick="deleteFile(${obj.id})" style="visibility:hidden;">×</button></li><br>`
   })
   activeTasks = []
   completedTasks = []

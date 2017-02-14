@@ -5,25 +5,28 @@
   <title>TODO</title>
   <link rel="stylesheet" type="text/css" href="todo.css">
 </head>
-
+<center>
 <body>
-  <div class="wrapper">
-  <header class="header"><h1>todos</h1><button id='updateAll'></button><input type="text" placeholder="What needs to be done?" name="data" id="description" class="new-todo" autofocus></header>
-  <article class="main">
+  <h1>todos</h1>
+  <div id="wrapper">
+    <div id="header">
+  <button class="button-image" id="updateAll"><img src="images/arrow.png" height="2%" /></button><input type="text" placeholder="What needs to be done?" name="data" id="description" class="new-todo" autofocus>
+    </div>
     <ul id="read">
     </ul>
-  </article>
   <footer class="footer" id="footer-bar">
-    <label id = 'items'></label>
-    <button id = 'all'>All</button>
-    <button id = 'active'>Active</button>
-    <button id = 'completed'>Completed</button>
+    <span id = 'items'></span>
+    <a href="#/" id = 'all' class="selected">All</a>
+    <a href="#/active" id = 'active'>Active</a>
+    <a href="#/completed" id = 'completed'>Completed</a>
     <button id = 'clearCompleted'>Clear completed</button>
   </footer>
 </div>
-  <footer class="info"></footer>
+  <p>Double Click on task to change details</p>
+    <p>Click on checkbox to change status</p>
+    <p>Click on cross to delete details</p>
   <script src='index.js'></script>
 
 </body>
-
+</center>
 </html>
