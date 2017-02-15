@@ -18,7 +18,7 @@ readTasks().then(function (response) {
 
 document.getElementById('description').onkeydown = function (e) {
   if (e.keyCode === 13) {
-    let description = document.getElementById('description').value
+    let description = escapeHtml(document.getElementById('description').value)
     document.getElementById('description').value = ''
     console.log(description)
     writeTasks(description).then(function (response) {
@@ -74,7 +74,7 @@ function updateDescription(id) {
   // alert(id)
   console.log(id)
   const textID = 'text' + id
-  const descriptionData = document.getElementById(textID).value
+  const descriptionData = escapeHtml(document.getElementById(textID).value)
   if (descriptionData === '') {
     deleteFile(id)
   }
