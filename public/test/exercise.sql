@@ -82,6 +82,7 @@ ALTER TABLE ONLY todo ALTER COLUMN id SET DEFAULT nextval('todo_id_seq'::regclas
 COPY todo (description, status, id) FROM stdin;
 Revise lessons	f	135
 Write a blog	f	136
+Running	f	137
 Buy vegetables	t	134
 \.
 
@@ -90,7 +91,7 @@ Buy vegetables	t	134
 -- Name: todo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: manavkodnani
 --
 
-SELECT pg_catalog.setval('todo_id_seq', 136, true);
+SELECT pg_catalog.setval('todo_id_seq', 139, true);
 
 
 --

@@ -74,7 +74,7 @@ app.delete('/destroy/:id', function (request, response) {
 app.put('/uncheckAll', function (request, response) {
   operations.uncheckAll()
     .then(function (result) {
-      response.send('Successfuly updated')
+      response.send(result)
     })
     .catch(function (error) {
       response.sendStatus(500)
@@ -85,7 +85,7 @@ app.put('/uncheckAll', function (request, response) {
 app.put('/checkAll', function (request, response) {
   operations.checkAll()
     .then(function (result) {
-      response.send('Successfuly updated')
+      response.send(result)
     })
     .catch(function (error) {
       response.sendStatus(500)
@@ -96,7 +96,7 @@ app.put('/checkAll', function (request, response) {
 app.delete('/clearCompleted', function (request, response) {
   operations.clearCompleted()
     .then(function (result) {
-      response.send('Successfuly deleted')
+      response.send(result)
     })
     .catch(function (error) {
       response.sendStatus(500)
