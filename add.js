@@ -1,13 +1,15 @@
 const Sequelize = require('sequelize')
 
-const sequelize = new Sequelize('postgres://manavkodnani:competitivecoding@localhost:5432/manavkodnani')
+var databaseName = process.env.DEV_MODE === 'test' ? 'testdb' : 'manavkodnani'
+
+const sequelize = new Sequelize('postgres://manavkodnani:competitivecoding@localhost:5432/' + databaseName)
 
 const operations = {
   create: function (description) {
     return sequelize.query(`INSERT INTO todo (DESCRIPTION) VALUES ('${description}') RETURNING id`)
   },
   read: function () {
-    return sequelize.query(`SELECT * from todo ORDER BY id`)
+    return sequelize.query(`SELECT id, description, status from todo ORDER BY id`)
   },
   update: function (id, description, status) {
     if (!description) {

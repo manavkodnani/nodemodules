@@ -1,126 +1,179 @@
-var expect = chai.expect;
+var expect = chai.expect
 var should = chai.should()
-todos = [
- { status: 1, description: 'd1', status: true },
- { status: 3, description: 'd2', status: false },
- { status: 4, description: 'd3', status: false },
- { status: 5, description: 'd4', status: true }
-]
-describe('Escape HTML Special characters', function () {
- it('should return eascaped string when a string with special character is passed', function () {
-   const scriptString = '<script>alert("hey");</script>'
-   expect(escapeHtml(scriptString)).to.equal('&lt;script&gt;alert(&quot;hey&quot;);&lt;&#x2F;script&gt;');
- })
+describe('when the delete API is called', function () {
+
+  it('should return false message when ID not present', function (done) {
+    deleteTask(600)
+      .then((response) => {
+        return response.text()
+      })
+      .then((result) => {
+        expect(result).to.equals('Cannot delete. Id does not exist')
+        done()
+      })
+      .catch((err) => {
+        done(err)
+      })
+  })
+  it('should return false message when non-integer ID is passed', function (done) {
+    deleteTask('abc')
+      .then((response) => {
+        return response.text()
+      })
+      .then((result) => {
+        expect(result).to.equals('Id is not an integer')
+        done()
+      })
+      .catch((err) => {
+        done(err)
+      })
+  })
+  it('should return false message when no ID is passed', function (done) {
+    deleteTask()
+      .then((response) => {
+        return response.text()
+      })
+      .then((result) => {
+        expect(result).to.equals('Id is not an integer')
+        done()
+      })
+      .catch((err) => {
+        done(err)
+      })
+  })
+  it('should return success message for correct ID', function (done) {
+    deleteTask(134)
+      .then((response) => {
+        return response.text()
+      })
+      .then((result) => {
+        expect(result).to.equals('Successfully deleted')
+        done()
+      })
+      .catch((err) => {
+        done(err)
+      })
+  })
 })
 
-describe('when read operation is performed', function () {
- it('should return an array of objects of tasks', function (done) {
-   let readFunction = read()
-   readFunction.then((response) => {
-     return response.json()
-   })
-     .then((tasks) => {
-       let isValid = tasks instanceof Array;
-       expect(isValid).eqls(true)
-       done()
-     })
-     .catch((err) => done(err))
- })
-})
-describe('when write operation is performed', function () {
- it('should return id of the newly written task', function (done) {
-   let writeFunction = write('task_new')
-   writeFunction.then((response) => {
-     return response.json()
-   })
-     .then((result) => {
-       id = result[0].id
-       let type = typeof(id)
-       expect(type).to.equals('number')
-       done()
-     })
-   .catch((err)=>done(err))
-})
-})
-describe('when delete operation is performed', function () {
- it('should return a proper message showing that task is deleted', function (done) {
-   let delFunction = deleteTask(93)
-   delFunction.then((response) => {
-     console.log(response)
-     return response.text()
-   })
-     .then((result) => {
-       console.log(result)
-       expect(result).to.equals('Successfully deleted')
-       done()
-     })
-   .catch((err)=>done(err))
-})
-it('should return a error message showing that no task is there to deleted', function (done) {
-   let delFunction = deleteTask(400)
-   delFunction.then((response) => {
-     console.log(response)
-     return response.text()
-   })
-     .then((result) => {
-       console.log(result)
-       expect(result).to.equals('Cannot delete. Id does not exist')
-       done()
-     })
-   .catch((err)=>done(err))
-})
+describe('When write API is called', function () {
+  it('should return success message when valid description is passed', function (done) {
+    writeTasks('jogging')
+      .then((response) => {
+        return response.json()
+      })
+      .then((result) => {
+        expect(typeof Number(result.id)).to.equals('number')
+        done()
+      })
+      .catch((err) => {
+        done(err)
+      })
+  })
+  it('should return error message when no description is passed', function () {
+    expect(writeTasks()).to.equals('No description passed')
+  })
+  it('should return error message when nothing is passed', function () {
+    expect(writeTasks()).to.equals('No description passed')
+  })
 })
 
-describe('when status operation is performed and valid id is given',function(){
- it('should return id when only status is updated',function(done){
-   let updStatus = updateStatus(95, true)
-   updStatus.then((response)=>
-   {
-     expect(response.status).to.equal(200)
-     done()
-   })
-   .catch((err)=>done(err))
- })
-  it('should return id when only description is updated',function(done){
-   let updDesc = updateDescription(97, 'something different')
-   updDesc.then((response)=>
-   {
-     return response.json()
-   })
-   .then((result)=>{
-     console.log(result[0][0].id)
-     expect(result[0][0].id).to.equals(497)
-     done()
-   })
-   .catch((err)=>done(err))
- })
+describe('When update API is called', function () {
+  it('should return success message when valid description and status with id are passed', function (done) {
+    const data ={status: true, description: 'running'}
+    updateTask(data, 134)
+      .then((response) => {
+        console.log(response)
+        return response.text()
+      })
+      .then((result) => {
+        expect(result).to.equals('Succesfully updated')
+        done()
+      })
+      .catch((err) => {
+        done(err)
+      })
+  })
+  it('should return success message only when valid description with id is passed', function (done) {
+    const data ={description: 'hiking'}
+    updateTask(data, 134)
+      .then((response) => {
+        return response.text()
+      })
+      .then((result) => {
+        expect(result).to.equals('Succesfully updated')
+        done()
+      })
+      .catch((err) => {
+        done(err)
+      })
+  })
+  it('should return success message only when valid status with id is passed', function (done) {
+    const data ={status: false}
+    updateTask(data, 134)
+      .then((response) => {
+        return response.text()
+      })
+      .then((result) => {
+        expect(result).to.equals('Succesfully updated')
+        done()
+      })
+      .catch((err) => {
+        done(err)
+      })
+  })
+  it('should return error message when nothing is passed for given id', function () {
+    const data = {}
+    expect(updateTask(data, 134)).to.equals("neither description nor status was passed")
+    
+  })
+  it('should return false message when no ID is passed', function (done) {
+    const data ={description: "hellooooo this is me"}
+    updateTask(data)
+      .then((response) => {
+        return response.text()
+      })
+      .then((result) => {
+        expect(result).to.equals('No id is passed')
+        done()
+      })
+      .catch((err) => {
+        done(err)
+      })
+  })
 })
 
-describe('when status operation is performed and invalid id is given',function(){
- it('should return status code 500 when only status is updated',function(done){
-   let updStatus = updateStatus(49, true)
-   updStatus.then((response)=>
-   {
-     return response.json()
-   })
-   .then((result)=>{
-     let resultLength = result[0].length
-     expect(resultLength).to.equals(0)
-     done()
-   })
-   .catch((err)=>done(err))
- })
-  it('should return status code 500 when only description is updated',function(done){
-   let updDesc = updateDescription(47, 'something different')
-   updDesc.then((response)=>
-   {
-     return response.json()
-   })
-   .then((result)=>{
-     let resultLength = (result[0].length)
-     expect(resultLength).to.equals(0)
-     done()
-   })
-   .catch((err)=>done(err))
- })
+describe('when the check/uncheck API is called', function () {
+  it('should return success when correctly unchecks all', function (done) {
+    toggleAllFetch(`/unCheckAll`)
+      .then((response) => {
+        // console.log(response)
+        return response.json()
+      })
+      .then((result) => {
+        // console.log(result)
+        expect(result[1].rowCount).to.equals(3)
+        done()
+      })
+      .catch((err) => {
+        console.log('here')
+        done(err)
+      })
+  })
+  it('should return success when correctly checks all', function (done) {
+    toggleAllFetch(`/checkAll`)
+      .then((response) => {
+        // console.log(response)
+        return response.json()
+      })
+      .then((result) => {
+        // console.log(result)
+        expect(result[1].rowCount).to.equals(3)
+        done()
+      })
+      .catch((err) => {
+        console.log('here')
+        done(err)
+      })
+  })
 })

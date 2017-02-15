@@ -47,10 +47,10 @@ app.put('/update/:id', function (request, response) {
   console.log(description, status)
   operations.update(id, description, status)
     .then(function (result) {
-      response.send('Successfuly updated')
+      response.send('Succesfully updated')
     })
     .catch(function (error) {
-      response.sendStatus(500)
+      response.send('No id is passed')
       console.error(error)
     })
 })
@@ -66,8 +66,8 @@ app.delete('/destroy/:id', function (request, response) {
       }
     })
   .catch(function (error) {
-    response.sendStatus(500)
     console.error(error)
+    response.send('Id is not an integer')
   })
 })
 

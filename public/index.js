@@ -3,9 +3,7 @@ let allTasks = []
 let completedTasks = []
 let activeTasks = []
 let flag = 0
-fetch('/read', {
-  method: 'get'
-}).then(function (response) {
+readTasks().then(function (response) {
   response.json().then(function (json) {
     json.forEach((obj, index) => {
       allTasks[index] = obj
@@ -23,9 +21,7 @@ document.getElementById('description').onkeydown = function (e) {
     let description = document.getElementById('description').value
     document.getElementById('description').value = ''
     console.log(description)
-    fetch(`/write/${description}`, {
-      method: 'post'
-    }).then(function (response) {
+    writeTasks(description).then(function (response) {
       console.log(response)
       response.json().then(function (json) {
         allTasks.push({ id: json[0].id, description, status: false })
@@ -42,9 +38,7 @@ document.getElementById('description').onkeydown = function (e) {
 function deleteFile(id) {
   let index1 = allTasks.findIndex(x => x.id === id)
   console.log(index1)
-  fetch(`/destroy/${id}`, {
-    method: 'delete'
-  }).then(function (response) {
+  deleteTask(id).then(function (response) {
     console.log('Before splicing:', allTasks)
     let index = allTasks.findIndex(x => x.id === id)
     console.log('index to delete', index)
@@ -63,13 +57,7 @@ function updateStatus(id) {
   let statusData = document.getElementById(statusId).checked.toString()
   console.log(statusData)
   let data = { status: statusData }
-  fetch(`/update/${id}`, {
-    method: 'put',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }).then(function (response) {
+  updateTask(data, id).then(function (response) {
     let index = allTasks.findIndex(x => x.id === id)
     console.log(index)
     statusData = (statusData === 'true')
@@ -87,15 +75,12 @@ function updateDescription(id) {
   console.log(id)
   const textID = 'text' + id
   const descriptionData = document.getElementById(textID).value
+  if (descriptionData === '') {
+    deleteFile(id)
+  }
   console.log(descriptionData)
   let data = { description: descriptionData }
-  fetch(`/update/${id}`, {
-    method: 'put',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }).then(function (response) {
+  updateTask(data, id).then(function (response) {
     let index = allTasks.findIndex(x => x.id === id)
     allTasks[index].description = descriptionData
     countItems()
@@ -163,6 +148,7 @@ function all() {
 }
 
 function completed() {
+  completedTasks = []
   allTasks.forEach((obj) => {
     if (obj.status === true) {
       completedTasks.push(obj)
@@ -177,6 +163,7 @@ function completed() {
 }
 
 function active() {
+  activeTasks = []
   allTasks.forEach((obj) => {
     if (obj.status === false) {
       activeTasks.push(obj)
@@ -192,9 +179,7 @@ function active() {
 
 function checkAll() {
   if (allTasks.every((task) => (task.status === true))) {
-    fetch(`/uncheckAll`, {
-      method: 'PUT'
-    }).then((response) => {
+    toggleCheckTasks(`/uncheckAll`).then((response) => {
       console.log(response)
       allTasks.forEach((task) => {
         task.status = false
@@ -203,9 +188,7 @@ function checkAll() {
       checkFlag()
     })
   } else {
-    fetch(`/checkAll`, {
-      method: 'PUT'
-    }).then((response) => {
+    toggleCheckTasks(`/checkAll`).then((response) => {
       console.log(response)
       allTasks.forEach((task) => {
         task.status = true
@@ -217,9 +200,7 @@ function checkAll() {
 }
 
 function clearCompleted() {
-  fetch(`/clearCompleted`, {
-    method: 'DELETE'
-  }).then((response) => {
+  clearCompletedTasks().then((response) => {
     let newTasks = []
     allTasks.forEach((task, index) => {
       if (task.status === false) {
@@ -257,23 +238,5 @@ function enableText(id) {
   let btn = document.getElementById(`delete${id}`)
   chk.style.visibility = 'hidden'
   btn.style.visibility = 'hidden'
-}
-
-function render (currentTasks) {
-  row = ''
-  let checked
-  currentTasks.forEach((obj) => {
-    if (obj.status === true) {
-      checked = 'checked'
-    } else {
-      checked = null
-    }
-    row += `<li id="${obj.id}" onmouseover="showDelete(${obj.id})" onmouseout="hideDelete(${obj.id})"><input class="check-status" type="checkbox" id=status${obj.id} ${checked} onclick="updateStatus(${obj.id})"><input type="text" value="${obj.description}" class="update-description ${checked ? 'striked' : ''}" id=text${obj.id} ondblclick="enableText(${obj.id})" onfocusout="updateDescription(${obj.id})" readOnly="true"><button class="delete" id=delete${obj.id} onclick="deleteFile(${obj.id})" style="visibility:hidden;">×</button></li>`
-  })
-  activeTasks = []
-  completedTasks = []
-  document.getElementById('read').innerHTML = null
-  document.getElementById('read').innerHTML = row
-  document.getElementById('footer-bar').style.visibility = (allTasks.length > 0) ? 'visible' : 'hidden'
 }
 
